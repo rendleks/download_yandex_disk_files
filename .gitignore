@@ -1,0 +1,13 @@
+*.egg-info
+__pycache__
+dist/
+*.pyc
+.venv/
+.coverage
+coverage.xml
+.pytest_cache/
+.vscode
+aquatek_data_files/
+aquatek_resize/
+data/
+scheme/
