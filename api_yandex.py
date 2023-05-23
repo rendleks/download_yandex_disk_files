@@ -2,7 +2,7 @@ import requests
 from urllib.parse import urlencode
 import csv
 import os
-import subprocess
+import zipfile
 
 
 def get_href(public_link):
@@ -27,22 +27,48 @@ def download_files(url):
     end_name = start_filename + end_filename
     filename = url[start_filename:end_name][9:]
     download_url = requests.get(url)
-    with open(os.path.join(destination_folder, filename), 'wb') as ff:
+    final_link = os.path.join(destination_folder, filename)
+    with open(final_link, 'wb') as ff:
         ff.write(download_url.content)
     
     print("Скачан файл: ", filename)
+    
+    return final_link
+
+
+def unzip_files(path_to_zip):
+    """
+    Распаковывает файлы в папку unzip_files
+    """
+    
+    dest_unzip = 'unzip_files'
+    path_to_folder, filename = os.path.split(path_to_zip)
+    name, extention = os.path.splitext(filename)
+
+    with zipfile.ZipFile(path_to_zip, 'r') as zip_ref:
+        zip_ref.extractall(dest_unzip)
+
+    return [os.path.join(dest_unzip, file) for file in os.listdir(os.path.join(dest_unzip, name))]
 
 
 def main():
-    #example_link = "https://disk.yandex.ru/d/74xEHTD3tabF-w"
-    #download_files(get_href(example_link))
     try:
-        with open('list_urls.csv', 'r', encoding='utf-8', newline="") as read_file:
+        with open('test_url.csv', 'r', encoding='utf-8', newline="") as read_file:
             reading = csv.reader(read_file)
             for row in reading:
                 href = str(*row)
+                with open('result_data.csv', 'a', encoding="utf-8", newline="") as csv_write:
+                    writer = csv.writer(csv_write, delimiter=",")
+                    writer.writerow(
+                        [
+                        href, 
+                        *unzip_files(download_files(get_href(href))),
+                    ]
+                    )
     except FileNotFoundError:
         print("Файл не найден!")
+    
+    print("Well Done!")
 
 
 if __name__ == "__main__":
