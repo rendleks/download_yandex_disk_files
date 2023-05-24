@@ -6,7 +6,9 @@ import zipfile
 
 
 def get_href(public_link):
-
+    """
+    Получение ссылки для скачивания
+    """
     base_url = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?'
     final_url = base_url + urlencode(dict(public_key=public_link))
     response = requests.get(final_url)
@@ -40,7 +42,7 @@ def unzip_files(path_to_zip):
     """
     Распаковывает файлы в папку unzip_files
     """
-    
+    cur_path = os.getcwd()
     dest_unzip = 'unzip_files'
     path_to_folder, filename = os.path.split(path_to_zip)
     name, extention = os.path.splitext(filename)
@@ -48,7 +50,10 @@ def unzip_files(path_to_zip):
     with zipfile.ZipFile(path_to_zip, 'r') as zip_ref:
         zip_ref.extractall(dest_unzip)
 
-    return [os.path.join(dest_unzip, file) for file in os.listdir(os.path.join(dest_unzip, name))]
+    return [
+        os.path.join(cur_path, dest_unzip, name, file) 
+        for file in os.listdir(os.path.join(dest_unzip, name))
+        ]
 
 
 def main():
@@ -68,7 +73,8 @@ def main():
     except FileNotFoundError:
         print("Файл не найден!")
     
-    print("Well Done!")
+    finally:
+        print("Well Done!")
 
 
 if __name__ == "__main__":

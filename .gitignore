@@ -11,3 +11,6 @@ aquatek_data_files/
 aquatek_resize/
 data/
 scheme/
+download_files/
+unzip_files/
+*.csv
