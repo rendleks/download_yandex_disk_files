@@ -10,6 +10,7 @@ def get_href(public_link):
     Получение ссылки для скачивания
     """
     base_url = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?'
+    #"https://cloud-api.yandex.net/v1/disk/public/resources?public_key=https://disk.yandex.ru/d/IUnNFlWqv9HRzg"
     final_url = base_url + urlencode(dict(public_key=public_link))
     response = requests.get(final_url)
     parse_href = response.json()['href']
