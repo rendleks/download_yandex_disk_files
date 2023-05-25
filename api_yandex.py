@@ -5,12 +5,14 @@ import os
 import zipfile
 
 
+from cli import parse_args
+
+
 def get_href(public_link):
     """
     Получение ссылки для скачивания
     """
     base_url = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?'
-    #"https://cloud-api.yandex.net/v1/disk/public/resources?public_key=https://disk.yandex.ru/d/IUnNFlWqv9HRzg"
     final_url = base_url + urlencode(dict(public_key=public_link))
     response = requests.get(final_url)
     parse_href = response.json()['href']
@@ -68,34 +70,48 @@ def unzip_files(path_to_zip):
         ]
 
 
-def main():
+def read_file(file_path):
+    
+    list_urls = list()
+
     try:
-        with open('test_url2.csv', 'r', encoding='utf-8', newline="") as read_file:
+        with open(file_path, 'r', encoding='utf-8', newline="") as read_file:
             reading = csv.reader(read_file)
             for row in reading:
-                href = str(*row)
-                with open('result_data.csv', 'a', encoding="utf-8", newline="") as csv_write:
-                    writer = csv.writer(csv_write, delimiter=",")
-                    if get_type(href) == 'dir':
-                        writer.writerow(
-                            [
-                                href, 
-                                *unzip_files(download_files(get_href(href))),
-                            ]
-                        )
-                    elif get_type(href) == 'file':
-                        writer.writerow(
-                            [
-                                href, 
-                                download_files(get_href(href)),
-                            ]
-                        )
+                list_urls.append(str(*row))
+        return list_urls
+    
     except FileNotFoundError:
         print("Файл не найден!")
-    
-    finally:
-        print("Well Done!")
 
+
+def main():
+
+    file_result = 'result_data.csv'
+
+    if os.path.exists(file_result):
+        os.rmdir(file_result)
+
+    for href in read_file(parse_args()):
+        with open(file_result, 'a', encoding="utf-8", newline="") as csv_write:
+            writer = csv.writer(csv_write, delimiter=",")
+            if get_type(href) == 'dir':
+                writer.writerow(
+                    [
+                        href, 
+                        *unzip_files(download_files(get_href(href))),
+                    ]
+                )
+            elif get_type(href) == 'file':
+                writer.writerow(
+                    [
+                        href, 
+                        download_files(get_href(href)),
+                    ]
+                ) 
+    
+    print("Well Done!")
+    
 
 if __name__ == "__main__":
     main()
