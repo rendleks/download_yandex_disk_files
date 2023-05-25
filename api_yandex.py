@@ -90,7 +90,7 @@ def main():
     file_result = 'result_data.csv'
 
     if os.path.exists(file_result):
-        os.rmdir(file_result)
+        os.remove(file_result)
 
     for href in read_file(parse_args()):
         with open(file_result, 'a', encoding="utf-8", newline="") as csv_write:
@@ -108,7 +108,7 @@ def main():
                         href, 
                         download_files(get_href(href)),
                     ]
-                ) 
+                )
     
     print("Well Done!")
     
