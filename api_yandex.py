@@ -17,6 +17,17 @@ def get_href(public_link):
     return parse_href
 
 
+def get_type(public_link):
+    """
+    Получает тип файла: файл или папка.
+    """
+    resources = "https://cloud-api.yandex.net/v1/disk/public/resources?"
+    requests_url = resources + urlencode(dict(public_key=public_link))
+    r =  requests.get(requests_url)
+    type_file = r.json()['type']
+    return type_file
+
+
 def download_files(url):
     
     currient_folder = os.getcwd()
@@ -59,18 +70,26 @@ def unzip_files(path_to_zip):
 
 def main():
     try:
-        with open('test_url.csv', 'r', encoding='utf-8', newline="") as read_file:
+        with open('test_url2.csv', 'r', encoding='utf-8', newline="") as read_file:
             reading = csv.reader(read_file)
             for row in reading:
                 href = str(*row)
                 with open('result_data.csv', 'a', encoding="utf-8", newline="") as csv_write:
                     writer = csv.writer(csv_write, delimiter=",")
-                    writer.writerow(
-                        [
-                        href, 
-                        *unzip_files(download_files(get_href(href))),
-                    ]
-                    )
+                    if get_type(href) == 'dir':
+                        writer.writerow(
+                            [
+                                href, 
+                                *unzip_files(download_files(get_href(href))),
+                            ]
+                        )
+                    elif get_type(href) == 'file':
+                        writer.writerow(
+                            [
+                                href, 
+                                download_files(get_href(href)),
+                            ]
+                        )
     except FileNotFoundError:
         print("Файл не найден!")
     
