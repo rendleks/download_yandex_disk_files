@@ -4,5 +4,5 @@
 ![статья написана для Pikabu](/img/pikabu.png)
 
 Пока редактирую код, а так же тестирую на разных платформах:
-- дома на Linux Mint
-- на работе на Windows
+- Linux Mint
+- Windows 10
