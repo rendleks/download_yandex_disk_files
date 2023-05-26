@@ -65,7 +65,7 @@ def unzip_files(path_to_zip):
         zip_ref.extractall(dest_unzip)
 
     return [
-        os.path.join(cur_path, dest_unzip, name, file) 
+        os.path.join(cur_path, dest_unzip, name, file)
         for file in os.listdir(os.path.join(dest_unzip, name))
         ]
 
