@@ -1,5 +1,5 @@
 # download_yandex_disk_files
-Cтатьz для pikabu.
+Cтатья для pikabu.
 
 ![статья написана для Pikabu](/img/pikabu.png)
 
