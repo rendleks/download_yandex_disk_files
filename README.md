@@ -16,7 +16,7 @@ $ pip install -r requirements.txt
 
 $ python api_yandex.py path_to_file.csv
 ```
-
+[![asciicast](https://asciinema.org/a/R9qqtZLPDu6erGA6aD2eyQykN.svg)](https://asciinema.org/a/R9qqtZLPDu6erGA6aD2eyQykN)
 
 ### Файл с рультатом имеет вид (ссылка, полный путь до файла)
 
