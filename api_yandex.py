@@ -71,6 +71,9 @@ def unzip_files(path_to_zip):
 
 
 def read_file(file_path):
+    """
+    Чтение ссылок из файла csv.
+    """
     
     list_urls = list()
 
@@ -78,7 +81,7 @@ def read_file(file_path):
         with open(file_path, 'r', encoding='utf-8', newline="") as read_file:
             reading = csv.reader(read_file)
             for row in reading:
-                list_urls.append(str(*row))
+                list_urls.append(str(*row).strip())
         return list_urls
     
     except FileNotFoundError:
