@@ -14,7 +14,7 @@ $ cd download_yandex_disk_files
 
 $ pip install -r requirements.txt
 
-$ python python api_yandex.py path_to_file.csv
+$ python api_yandex.py path_to_file.csv
 ```
 
 
